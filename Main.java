@@ -32,12 +32,12 @@ public class Main {
     }
 
     public static void stringBuilderAndWrite(String a) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         Date date = new Date();
-        sb.append(a + date);
-        String sts = sb.toString();
+        stringBuilder.append(a + date);
+        String stringBuilderToString = stringBuilder.toString();//Чтобы получить строку, которая хранится в stringBuilder, мы можем использовать стандартный метод toString()
         try (FileWriter writer = new FileWriter("r://GAMES/temp/temp.txt", true)) {
-            writer.write(sts);
+            writer.write(stringBuilderToString);
             writer.append('\n');
             writer.append('!');
             writer.flush();
@@ -47,41 +47,41 @@ public class Main {
     }
 
     public static void saveGame(String b, GameProgress gameProgress) {
-        try (FileOutputStream fos = new FileOutputStream(b);
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(gameProgress);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(b);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(gameProgress);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     public static void zipFiles(String c, String d) {
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(c));
-             FileInputStream fis = new FileInputStream(d)) {
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(c));
+             FileInputStream fileInputStream = new FileInputStream(d)) {
             ZipEntry entry = new ZipEntry(d);
-            zos.putNextEntry(entry);
-            byte[] buffer = new byte[fis.available()];
-            fis.read(buffer);
-            zos.write(buffer);
-            zos.closeEntry();
+            zipOutputStream.putNextEntry(entry);
+            byte[] buffer = new byte[fileInputStream.available()];
+            fileInputStream.read(buffer);
+            zipOutputStream.write(buffer);
+            zipOutputStream.closeEntry();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     public static void openZip(String e) {
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(e))) {
+        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(e))) {
             ZipEntry entry;
             String name;
-            while ((entry = zis.getNextEntry()) != null) {
+            while ((entry = zipInputStream.getNextEntry()) != null) {
                 name = entry.getName();
-                FileOutputStream fos = new FileOutputStream(name);
-                for (int c = zis.read(); c != -1; c = zis.read()) {
-                    fos.write(c);
+                FileOutputStream fileOutputStream = new FileOutputStream(name);
+                for (int c = zipInputStream.read(); c != -1; c = zipInputStream.read()) {
+                    fileOutputStream.write(c);
                 }
-                fos.flush();
-                zis.closeEntry();
-                fos.close();
+                fileOutputStream.flush();
+                zipInputStream.closeEntry();
+                fileOutputStream.close();
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -90,9 +90,9 @@ public class Main {
 
     public static void openProgress(String f) {
         GameProgress gameProgress = null;
-        try (FileInputStream fis = new FileInputStream(f);
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
-            gameProgress = (GameProgress) ois.readObject();
+        try (FileInputStream fileInputStream = new FileInputStream(f);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            gameProgress = (GameProgress) objectInputStream.readObject();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
