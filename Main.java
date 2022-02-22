@@ -13,31 +13,31 @@ public class Main {
         stringBuilderAndWrite("Каталог создан    " + x);
     }
 
-    public static void createFile(String x) {
-        File myFile = new File(x);
+    public static void createFile(String y) {
+        File myFile = new File(y);
         try {
             if (myFile.createNewFile())
-                System.out.println("Файл был создан   " + x);
-            stringBuilderAndWrite("Файл был создан   " + x);
+                System.out.println("Файл был создан   " + y);
+            stringBuilderAndWrite("Файл был создан   " + y);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    public static void deleteFile(String x) {
-        File deleteFile = new File(x);
+    public static void deleteFile(String z) {
+        File deleteFile = new File(z);
         if (deleteFile.delete())
-            System.out.println("Файл был удален   " + x);
-        stringBuilderAndWrite("Файл был удален   " + x);
+            System.out.println("Файл был удален   " + z);
+        stringBuilderAndWrite("Файл был удален   " + z);
     }
 
-    public static void stringBuilderAndWrite(String x) {
+    public static void stringBuilderAndWrite(String a) {
         StringBuilder sb = new StringBuilder();
         Date date = new Date();
-        sb.append(x + date);
-        String ss = sb.toString();
+        sb.append(a + date);
+        String sts = sb.toString();
         try (FileWriter writer = new FileWriter("r://GAMES/temp/temp.txt", true)) {
-            writer.write(ss);
+            writer.write(sts);
             writer.append('\n');
             writer.append('!');
             writer.flush();
@@ -46,8 +46,8 @@ public class Main {
         }
     }
 
-    public static void saveGame(String z, GameProgress gameProgress) {
-        try (FileOutputStream fos = new FileOutputStream(z);
+    public static void saveGame(String b, GameProgress gameProgress) {
+        try (FileOutputStream fos = new FileOutputStream(b);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(gameProgress);
         } catch (Exception ex) {
@@ -55,43 +55,43 @@ public class Main {
         }
     }
 
-    public static void zipFiles(String k, String z) {
-        try (ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(k));
-             FileInputStream fis = new FileInputStream(z)) {
-            ZipEntry entry = new ZipEntry(z);
-            zout.putNextEntry(entry);
+    public static void zipFiles(String c, String d) {
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(c));
+             FileInputStream fis = new FileInputStream(d)) {
+            ZipEntry entry = new ZipEntry(d);
+            zos.putNextEntry(entry);
             byte[] buffer = new byte[fis.available()];
             fis.read(buffer);
-            zout.write(buffer);
-            zout.closeEntry();
+            zos.write(buffer);
+            zos.closeEntry();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    public static void openZip(String k) {
-        try (ZipInputStream zin = new ZipInputStream(new FileInputStream(k))) {
+    public static void openZip(String e) {
+        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(e))) {
             ZipEntry entry;
             String name;
-            while ((entry = zin.getNextEntry()) != null) {
+            while ((entry = zis.getNextEntry()) != null) {
                 name = entry.getName();
-                FileOutputStream fout = new FileOutputStream(name);
-                for (int c = zin.read(); c != -1; c = zin.read()) {
-                    fout.write(c);
+                FileOutputStream fos = new FileOutputStream(name);
+                for (int c = zis.read(); c != -1; c = zis.read()) {
+                    fos.write(c);
                 }
-                fout.flush();
-                zin.closeEntry();
-                fout.close();
+                fos.flush();
+                zis.closeEntry();
+                fos.close();
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
 
-    public static void openProgress(String z) {
+    public static void openProgress(String f) {
         GameProgress gameProgress = null;
-        try (FileInputStream fos = new FileInputStream(z);
-             ObjectInputStream ois = new ObjectInputStream(fos)) {
+        try (FileInputStream fis = new FileInputStream(f);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
             gameProgress = (GameProgress) ois.readObject();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
